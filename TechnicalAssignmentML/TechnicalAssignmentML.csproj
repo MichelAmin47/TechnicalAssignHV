@@ -81,11 +81,17 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="features\RegressionHomePage.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RegressionHomePage.feature</DependentUpon>
+    </Compile>
     <Compile Include="features\SpecFlowFeature1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SpecFlowFeature1.feature</DependentUpon>
     </Compile>
+    <Compile Include="steps\HomePageSteps.cs" />
     <Compile Include="steps\SpecFlowFeature1Steps.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -94,6 +100,10 @@
     <None Include="App.config" />
     <None Include="Default.srprofile">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="features\RegressionHomePage.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>RegressionHomePage.feature.cs</LastGenOutput>
     </None>
     <None Include="features\SpecFlowFeature1.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
