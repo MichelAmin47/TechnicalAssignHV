@@ -98,7 +98,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 9
  testRunner.When("I select \"Amsterdam\" as my departure, I select \"Nice\" as my departure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 10
- testRunner.And("I select a deparure date, I select the return date", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I select a departure date \"20\" days in the future, I select the return date plus " +
+                    "\"3\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 11
  testRunner.And("I fly alone", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 12

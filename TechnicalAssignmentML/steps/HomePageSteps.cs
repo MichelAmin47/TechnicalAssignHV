@@ -5,6 +5,7 @@ using TechTalk.SpecFlow;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using OpenQA.Selenium.Support.UI;
+using OpenQA.Selenium.Remote;
 
 namespace TechnicalAssignmentML
 {
@@ -17,9 +18,12 @@ namespace TechnicalAssignmentML
         [Given(@"I am on the Transavia homepage")]
         public void GivenIAmOnTheTransaviaHomepage()
         {
-            driver = new ChromeDriver();
+            ChromeOptions options = new ChromeOptions();
+            options.AddArguments("start-maximized");
+            driver = new ChromeDriver(options);
+
             wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-            driver.Manage().Window.Maximize();
+
             driver.Url = "https://www.transavia.com/nl-NL/home/";
 
             //Don't actually close the cookie message. Site seems to reload it self on occasion
@@ -30,7 +34,6 @@ namespace TechnicalAssignmentML
         [When(@"I select ""(.*)"" as my departure, I select ""(.*)"" as my departure")]
         public void WhenISelectAsMyDepartureISelectAsMyDeparture(string departure, string arrival)
         {
-
             IWebElement departureTextField = wait.Until(ExpectedConditions
                 .ElementToBeClickable(By.CssSelector("#routeSelection_DepartureStation-input")));
             departureTextField.SendKeys(departure);
@@ -40,14 +43,16 @@ namespace TechnicalAssignmentML
             arrivalTextField.Click();
 
             string xpathLocatorArrival = 
-                "//div[@class='autocomplete-results'][not(@style)]//h6[text()[contains(.,'vanaf Amsterdam')]]/following-sibling::ol//li[text()[contains(.,'Nice')]]";
+                "//div[@class='autocomplete-results'][not(@style)]//h6[text()[contains(.,'vanaf Amsterdam')]]/following-sibling::ol//li[text()[contains(.,'" 
+                + arrival
+                + "')]]";
             IWebElement autocompleteArrival = wait.Until(ExpectedConditions
                 .ElementIsVisible(By.XPath(xpathLocatorArrival)));
             autocompleteArrival.Click();
         }
 
-        [When(@"I select a deparure date, I select the return date")]
-        public void WhenISelectADeparureDateISelectTheReturnDate()
+        [When(@"I select a departure date ""(.*)"" days in the future, I select the return date plus ""(.*)"" days")]
+        public void WhenISelectADepartureDateDaysInTheFutureISelectTheReturnDatePlusDays(int departureInterval, int arrivalInterval)
         {
             IWebElement departureDateTextField = wait.Until(ExpectedConditions
                 .ElementToBeClickable(By.CssSelector("#dateSelection_OutboundDate-datepicker.date-input")));
@@ -57,9 +62,13 @@ namespace TechnicalAssignmentML
                 .ElementToBeClickable(By.CssSelector(".textfield #dateSelection_IsReturnFlight-datepicker.date-input")));
             arrivalDateTextField.Clear();
 
-            departureDateTextField.SendKeys("28 sep 2017");
-            arrivalDateTextField.SendKeys("27 sep 2017");
+            DateTime TodayDate = new DateTime();
+            TodayDate = DateTime.Now;
+            departureDateTextField.SendKeys(TodayDate.AddDays(departureInterval).ToString("dd-MM-yy"));
+            arrivalDateTextField.SendKeys(TodayDate.AddDays(departureInterval+arrivalInterval).ToString("dd-MM-yy"));
+
         }
+
 
         [When(@"I fly alone")]
         public void WhenIFlyAlone()
@@ -87,7 +96,7 @@ namespace TechnicalAssignmentML
 
             IList<IWebElement> selectFlightButtons = driver.FindElements(By.CssSelector("div.select"));
             Console.WriteLine(selectFlightButtons.Count);
-            Assert.IsTrue(selectFlightButtons.Count == 2, "Amount of select buttons found to find return flights is not correct");
+            Assert.IsTrue(selectFlightButtons.Count >= 2, "Amount of select buttons found to find return flights is not correct");
 
             driver.Quit();
         }
