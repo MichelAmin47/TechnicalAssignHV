@@ -9,7 +9,7 @@ namespace TechnicalAssignmentML.steps
     [Binding]
     public class SpecFlowFeature1Steps
     {
-        IWebDriver driver;
+        protected IWebDriver driver;
 
         [Given(@"I am on the Polteq WebShop homepage")]
         public void GivenIAmOnThePolteqWebShopHomepage()
