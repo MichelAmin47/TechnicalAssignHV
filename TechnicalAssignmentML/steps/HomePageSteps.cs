@@ -42,6 +42,9 @@ namespace TechnicalAssignmentML
                 .ElementToBeClickable(By.CssSelector("#routeSelection_ArrivalStation-input")));
             arrivalTextField.Click();
 
+            //safeguard for cookie alert
+            //wait.Until(ExpectedConditions.InvisibilityOfElementLocated(By.CssSelector(".cc-left>button.cookie-consent-close")));
+
             string xpathLocatorArrival = 
                 "//div[@class='autocomplete-results'][not(@style)]//h6[text()[contains(.,'vanaf Amsterdam')]]/following-sibling::ol//li[text()[contains(.,'" 
                 + arrival
@@ -77,11 +80,55 @@ namespace TechnicalAssignmentML
                 .GetAttribute("innerHTML");
             Assert.AreEqual("1 Volwassene", passengersSite,"Default value on the site is not correct");
         }
-        
+
+        [When(@"I select (.*) adults, (.*) children and (.*) baby as my traveling party")]
+        public void WhenISelectAdultsChildrenAndBabyAsMyTravelingParty(int adultCount, int childCount, int babyCount)
+        {
+            IWebElement travelParty = wait.Until(ExpectedConditions
+                .ElementToBeClickable(By.CssSelector("#booking-passengers-input")));
+            travelParty.Click();
+
+            if (adultCount > 1)
+            {
+                IWebElement increaseAdultButton = wait.Until(ExpectedConditions
+                    .ElementToBeClickable(By.CssSelector(".selectfield.adults .button.button-secondary.increase")));
+
+                int currentAdult = Int32.Parse((driver.FindElement(By.CssSelector(".selectfield.adults .value")).GetAttribute("innerHTML")));
+
+                for (int i = 0; i < (adultCount-currentAdult); i++)
+                {
+                    increaseAdultButton.Click();
+                }
+            }
+
+            if (childCount > 0)
+            {
+                IWebElement increaseChildButton = wait.Until(ExpectedConditions
+                    .ElementToBeClickable(By.CssSelector(".selectfield.children .button.button-secondary.increase")));
+                for (int i = 0; i < childCount; i++)
+                {
+                    increaseChildButton.Click();
+                }
+            }
+
+            if (babyCount > 0)
+            {
+                IWebElement increaseBabyButton = wait.Until(ExpectedConditions
+                    .ElementToBeClickable(By.CssSelector(".selectfield.babies .button.button-secondary.increase")));
+                for (int i = 0; i < babyCount; i++)
+                {
+                    increaseBabyButton.Click();
+                }
+            }
+        }
+
         [Then(@"I should be taken to the ""(.*)"" page")]
         public void ThenIShouldBeTakenToThePage(string pageName)
         {
-            driver.FindElement(By.CssSelector(".desktop button[class*= button-primary]")).Click();
+            IWebElement searchButton = wait.Until(ExpectedConditions
+                .ElementToBeClickable(By.CssSelector(".desktop button[class*= button-primary]")));
+            searchButton.Click();
+
             Assert.AreEqual(pageName, driver.Title, driver.Title + " is not the correct page");
         }
         
@@ -96,7 +143,23 @@ namespace TechnicalAssignmentML
 
             IList<IWebElement> selectFlightButtons = driver.FindElements(By.CssSelector("div.select"));
             Console.WriteLine(selectFlightButtons.Count);
-            Assert.IsTrue(selectFlightButtons.Count >= 2, "Amount of select buttons found to find return flights is not correct");
+            Assert.IsTrue(selectFlightButtons.Count >= 1, 
+                "Amount of select buttons found to find return flights is too low");
+
+            driver.Quit();
+        }
+
+        [Then(@"warning should appear informing me to contact the Service Centre")]
+        public void ThenWarningShouldAppearInformingMeToContactTheServiceCentre()
+        {
+            IWebElement travelPartyBookingSite = wait.Until(ExpectedConditions
+                .ElementToBeClickable(By.CssSelector("#booking-passengers-input")));
+
+            string warningContactServiceCentre =
+                driver.FindElement(By.CssSelector(".notification-message.notification-inline.notification-error>p")).Text;
+
+            Assert.IsTrue(warningContactServiceCentre.Contains("Neem hiervoor contact op met ons Service Centre"),
+                "Incorrect error message was shown: " + warningContactServiceCentre);
 
             driver.Quit();
         }

@@ -84,12 +84,12 @@ namespace TechnicalAssignmentML.Features
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Login Polteq WebShop")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("SpecFlowSeleniumSmokeTest")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SpecFlowFeature1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("mytag")]
-        public virtual void LoginPolteqWebShop()
+        public virtual void SpecFlowSeleniumSmokeTest()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Login Polteq WebShop", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("SpecFlowSeleniumSmokeTest", new string[] {
                         "mytag"});
 #line 7
 this.ScenarioSetup(scenarioInfo);

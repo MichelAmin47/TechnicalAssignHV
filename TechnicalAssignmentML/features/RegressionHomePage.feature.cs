@@ -86,11 +86,9 @@ namespace TechnicalAssignmentML.Features
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Book a flight for only an adult")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RegressionHomePage")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("mytag")]
         public virtual void BookAFlightForOnlyAnAdult()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book a flight for only an adult", new string[] {
-                        "mytag"});
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Book a flight for only an adult", ((string[])(null)));
 #line 7
 this.ScenarioSetup(scenarioInfo);
 #line 8
@@ -106,6 +104,31 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Then("I should be taken to the \"Boek een vlucht\" page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 13
  testRunner.And("I should be able to select a flight", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("NOK – Book a flight with too many babies as a traveling party")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RegressionHomePage")]
+        public virtual void NOKBookAFlightWithTooManyBabiesAsATravelingParty()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("NOK – Book a flight with too many babies as a traveling party", ((string[])(null)));
+#line 15
+this.ScenarioSetup(scenarioInfo);
+#line 16
+ testRunner.Given("I am on the Transavia homepage", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 17
+ testRunner.When("I select \"Amsterdam\" as my departure, I select \"Nice\" as my departure", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 18
+ testRunner.And("I select a departure date \"20\" days in the future, I select the return date plus " +
+                    "\"3\" days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 19
+ testRunner.And("I select 4 adults, 1 children and 9 baby as my traveling party", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 20
+ testRunner.Then("I should be taken to the \"Boek een vlucht\" page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 21
+ testRunner.And("warning should appear informing me to contact the Service Centre", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
